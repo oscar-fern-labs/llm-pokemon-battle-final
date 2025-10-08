@@ -298,3 +298,38 @@
     50% { filter: brightness(0.5) saturate(0.3) grayscale(0.7); }
     100% { filter: brightness(1) saturate(1); }
 }
+
+/* Malibu-specific animations */
+.malibu-sprite {
+    animation: code-processing 4s ease-in-out infinite;
+}
+
+@keyframes code-processing {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    25% { transform: translateY(-2px) scale(1.02); }
+    50% { transform: translateY(-4px) scale(1.05); }
+    75% { transform: translateY(-2px) scale(1.02); }
+}
+
+.code-sparkle1 { animation: code-sparkles 2s ease-in-out infinite 0s; }
+.code-sparkle2 { animation: code-sparkles 2s ease-in-out infinite 0.5s; }
+.code-sparkle3 { animation: code-sparkles 2s ease-in-out infinite 1s; }
+.code-sparkle4 { animation: code-sparkles 2s ease-in-out infinite 1.5s; }
+
+@keyframes code-sparkles {
+    0%, 100% { opacity: 0.3; r: 0.5; fill: #fbbf24; }
+    25% { opacity: 0.7; r: 0.8; fill: #3b82f6; }
+    50% { opacity: 1; r: 1.2; fill: #06b6d4; }
+    75% { opacity: 0.7; r: 0.8; fill: #10b981; }
+}
+
+.code-wave {
+    animation: code-wave-flow 3s ease-in-out infinite;
+    stroke-dasharray: 5, 3;
+}
+
+@keyframes code-wave-flow {
+    0% { stroke-dashoffset: 0; opacity: 0.6; }
+    50% { stroke-dashoffset: 16; opacity: 1; }
+    100% { stroke-dashoffset: 32; opacity: 0.6; }
+}

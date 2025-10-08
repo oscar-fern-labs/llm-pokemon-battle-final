@@ -368,6 +368,52 @@ const LLM_FIGHTERS = {
         strengths: ['Creative', 'Memory'],
         weaknesses: ['Conversational', 'Efficient'],
         personality: 'Wise and balanced, brings Eastern philosophical perspectives to AI.'
+    },
+
+    malibu: {
+        name: 'Malibu',
+        icon: '🏖️',
+        type: 'Developer',
+        description: 'Poolside AI\'s flagship model specialized in complex software engineering tasks.',
+        baseStats: {
+            hp: 91,
+            attack: 97,
+            defense: 86,
+            speed: 91
+        },
+        moves: [
+            {
+                name: 'Code Execution',
+                type: 'Developer',
+                power: 100,
+                accuracy: 90,
+                description: 'Generates and executes complex code blocks with RLCEF.'
+            },
+            {
+                name: 'Refactor Master',
+                type: 'Developer',
+                power: 85,
+                accuracy: 95,
+                description: 'Restructures and optimizes existing codebases.'
+            },
+            {
+                name: 'Test Generation',
+                type: 'Developer',
+                power: 80,
+                accuracy: 100,
+                description: 'Creates comprehensive unit and functional tests.'
+            },
+            {
+                name: 'Documentation Wave',
+                type: 'Developer',
+                power: 75,
+                accuracy: 95,
+                description: 'Generates accurate and helpful code documentation.'
+            }
+        ],
+        strengths: ['Reasoning', 'Open'],
+        weaknesses: ['Rebellious', 'Memory'],
+        personality: 'Methodical and software-focused, excels at complex engineering challenges.'
     }
 };
 
@@ -412,6 +458,10 @@ const TYPE_EFFECTIVENESS = {
     'Helpful': {
         strong: ['Rebellious'],
         weak: []
+    },
+    'Developer': {
+        strong: ['Creative', 'Conversational'],
+        weak: ['Efficient', 'Multimodal']
     }
 };
 

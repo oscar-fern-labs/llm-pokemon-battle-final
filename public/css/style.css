@@ -859,6 +859,7 @@ body {
 .type-memory { background-color: #ffa500; color: white; }
 .type-efficient { background-color: #4169e1; color: white; }
 .type-eastern { background-color: #daa520; color: white; }
+.type-developer { background-color: #6366f1; color: white; }
 
 /* Damage Effects */
 .damage-flash {

@@ -436,6 +436,19 @@ class GameController {
                 <circle cx="22" cy="22" r="1" fill="#ffd700" class="pattern-glow"/>
                 <circle cx="13" cy="13" r="1" fill="#ffffff"/>
                 <circle cx="19" cy="13" r="1" fill="#ffffff"/>
+            </svg>`,
+            
+            malibu: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite malibu-sprite">
+                <circle cx="16" cy="16" r="12" fill="#6366f1" stroke="#4f46e5" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#8b5cf6" stroke="#6366f1" stroke-width="1"/>
+                <rect x="10" y="10" width="12" height="8" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+                <rect x="12" y="12" width="8" height="4" rx="1" fill="#1f2937" stroke="#111827" stroke-width="1"/>
+                <path d="M12,13 L14,15 L16,13 L18,15 L20,13" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="11" cy="8" r="1" fill="#fbbf24" class="code-sparkle1"/>
+                <circle cx="21" cy="8" r="1" fill="#3b82f6" class="code-sparkle2"/>
+                <circle cx="11" cy="24" r="1" fill="#06b6d4" class="code-sparkle3"/>
+                <circle cx="21" cy="24" r="1" fill="#10b981" class="code-sparkle4"/>
+                <path d="M6,16 Q10,14 14,16 Q18,18 22,16 Q26,14 30,16" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" class="code-wave"/>
             </svg>`
         };
         
