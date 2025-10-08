@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Pokemon Battle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Title Screen -->
+    <div id="title-screen" class="screen active">
+        <div class="title-container">
+            <h1 class="game-title">LLM POKEMON<br>BATTLE</h1>
+            <p class="subtitle">The AI Showdown!</p>
+            <div class="llm-showcase">
+                <div class="llm-icons">
+                    <span class="llm-icon">🤖</span>
+                    <span class="llm-icon">💬</span>
+                    <span class="llm-icon">💎</span>
+                    <span class="llm-icon">😏</span>
+                    <span class="llm-icon">🦙</span>
+                    <span class="llm-icon">🧠</span>
+                    <span class="llm-icon">🌪️</span>
+                    <span class="llm-icon">🏮</span>
+                </div>
+            </div>
+            <button id="start-button" class="menu-button primary">START BATTLE</button>
+            <button id="music-toggle" class="menu-button secondary">🎵 MUSIC: ON</button>
+        </div>
+    </div>
+
+    <!-- Character Selection Screen -->
+    <div id="selection-screen" class="screen">
+        <div class="selection-container">
+            <h2 class="screen-title">CHOOSE YOUR LLM FIGHTER</h2>
+            <div class="fighters-grid" id="fighters-grid">
+                <!-- LLM fighters will be populated by JavaScript -->
+            </div>
+            <div class="selection-info">
+                <div id="fighter-details" class="fighter-details hidden">
+                    <h3 id="fighter-name"></h3>
+                    <div class="stats">
+                        <div class="stat"><span>HP:</span> <div class="stat-bar"><div class="stat-fill" id="hp-stat"></div></div> <span id="hp-value"></span></div>
+                        <div class="stat"><span>ATK:</span> <div class="stat-bar"><div class="stat-fill" id="atk-stat"></div></div> <span id="atk-value"></span></div>
+                        <div class="stat"><span>DEF:</span> <div class="stat-bar"><div class="stat-fill" id="def-stat"></div></div> <span id="def-value"></span></div>
+                        <div class="stat"><span>SPD:</span> <div class="stat-bar"><div class="stat-fill" id="spd-stat"></div></div> <span id="spd-value"></span></div>
+                    </div>
+                    <div class="type-info">
+                        <span class="type-label">Type:</span>
+                        <span id="fighter-type" class="type-badge"></span>
+                    </div>
+                    <div class="moves-preview">
+                        <h4>Signature Moves:</h4>
+                        <div id="moves-list"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="selection-buttons">
+                <button id="confirm-selection" class="menu-button primary disabled">CHOOSE THIS LLM</button>
+                <button id="back-to-title" class="menu-button secondary">BACK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Battle Screen -->
+    <div id="battle-screen" class="screen">
+        <div class="battle-container">
+            <div class="battle-top">
+                <div class="opponent-area">
+                    <div class="pokemon-sprite opponent-sprite" id="opponent-sprite">
+                        <span class="sprite-icon" id="opponent-icon"></span>
+                        <div class="sprite-animation"></div>
+                    </div>
+                    <div class="pokemon-info opponent-info">
+                        <div class="pokemon-name" id="opponent-name"></div>
+                        <div class="level">Lv50</div>
+                        <div class="health-container">
+                            <div class="health-bar">
+                                <div class="health-fill" id="opponent-health"></div>
+                            </div>
+                            <div class="hp-text">
+                                <span id="opponent-hp-current">100</span>/<span id="opponent-hp-max">100</span> HP
+                            </div>
+                        </div>
+                        <div class="status-effects" id="opponent-status"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="battle-bottom">
+                <div class="player-area">
+                    <div class="pokemon-info player-info">
+                        <div class="pokemon-name" id="player-name"></div>
+                        <div class="level">Lv50</div>
+                        <div class="health-container">
+                            <div class="health-bar">
+                                <div class="health-fill" id="player-health"></div>
+                            </div>
+                            <div class="hp-text">
+                                <span id="player-hp-current">100</span>/<span id="player-hp-max">100</span> HP
+                            </div>
+                        </div>
+                        <div class="status-effects" id="player-status"></div>
+                    </div>
+                    <div class="pokemon-sprite player-sprite" id="player-sprite">
+                        <span class="sprite-icon" id="player-icon"></span>
+                        <div class="sprite-animation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="battle-ui">
+                <!-- Battle Text Box -->
+                <div id="battle-text" class="battle-text-box">
+                    <p id="battle-message">What will <span id="current-pokemon"></span> do?</p>
+                </div>
+
+                <!-- Move Selection Menu -->
+                <div id="move-menu" class="move-menu">
+                    <div class="moves-grid">
+                        <button class="move-button" id="move1">
+                            <span class="move-name"></span>
+                            <span class="move-info">
+                                <span class="move-type"></span>
+                                <span class="move-power"></span>
+                            </span>
+                        </button>
+                        <button class="move-button" id="move2">
+                            <span class="move-name"></span>
+                            <span class="move-info">
+                                <span class="move-type"></span>
+                                <span class="move-power"></span>
+                            </span>
+                        </button>
+                        <button class="move-button" id="move3">
+                            <span class="move-name"></span>
+                            <span class="move-info">
+                                <span class="move-type"></span>
+                                <span class="move-power"></span>
+                            </span>
+                        </button>
+                        <button class="move-button" id="move4">
+                            <span class="move-name"></span>
+                            <span class="move-info">
+                                <span class="move-type"></span>
+                                <span class="move-power"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <button id="back-button" class="menu-button secondary small">BACK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory/Defeat Screen -->
+    <div id="result-screen" class="screen">
+        <div class="result-container">
+            <div class="result-animation" id="result-animation">
+                <div class="result-icon" id="result-icon"></div>
+            </div>
+            <h2 id="result-title" class="result-title"></h2>
+            <div class="result-details">
+                <p id="result-message"></p>
+                <div class="battle-stats">
+                    <div class="final-hp">
+                        <span id="final-player-name"></span>: <span id="final-player-hp"></span> HP remaining
+                    </div>
+                </div>
+            </div>
+            <div class="result-buttons">
+                <button id="play-again" class="menu-button primary">BATTLE AGAIN</button>
+                <button id="main-menu" class="menu-button secondary">MAIN MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="battle-music" loop>
+        <source src="audio/battle.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="victory-sound">
+        <source src="audio/victory.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="attack-sound">
+        <source src="audio/attack.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/llm-data.js"></script>
+    <script src="js/battle-engine.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>

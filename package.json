@@ -1,0 +1,16 @@
+{
+  "name": "llm-pokemon-battle",
+  "version": "1.0.0",
+  "description": "A pixel art Pokemon battle parody featuring LLM fighters",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["pokemon", "battle", "llm", "game"],
+  "author": "Fern Agent",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
