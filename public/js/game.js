@@ -146,12 +146,29 @@ class GameController {
         card.className = 'fighter-card';
         card.dataset.fighter = key;
 
+        // Create small sprite for selection
+        const spriteContainer = document.createElement('div');
+        spriteContainer.className = 'fighter-icon';
+        
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '40');
+        svg.setAttribute('height', '40');
+        svg.setAttribute('viewBox', '0 0 32 32');
+        svg.classList.add('llm-sprite', `sprite-${key}`);
+        
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', `sprites/sprites.svg#${key}-sprite`);
+        svg.appendChild(use);
+        spriteContainer.appendChild(svg);
+
         card.innerHTML = `
-            <div class="fighter-icon">${fighter.icon}</div>
             <div class="fighter-name">${fighter.name}</div>
             <div class="fighter-type-mini type-${fighter.type.toLowerCase()}">${fighter.type}</div>
             <div class="fighter-hp">HP: ${fighter.baseStats.hp}</div>
         `;
+        
+        // Insert sprite at the beginning
+        card.insertBefore(spriteContainer, card.firstChild);
 
         card.addEventListener('click', () => {
             this.selectFighter(key, fighter);
@@ -263,13 +280,13 @@ class GameController {
 
         // Player setup
         document.getElementById('player-name').textContent = player.name;
-        document.getElementById('player-icon').textContent = player.icon;
+        this.setupAnimatedSprite('player-icon', player.key, 'player');
         document.getElementById('player-hp-current').textContent = player.currentHP;
         document.getElementById('player-hp-max').textContent = player.maxHP;
         
         // Opponent setup
         document.getElementById('opponent-name').textContent = opponent.name;
-        document.getElementById('opponent-icon').textContent = opponent.icon;
+        this.setupAnimatedSprite('opponent-icon', opponent.key, 'opponent');
         document.getElementById('opponent-hp-current').textContent = opponent.currentHP;
         document.getElementById('opponent-hp-max').textContent = opponent.maxHP;
 
@@ -312,6 +329,56 @@ class GameController {
         document.getElementById('battle-message').innerHTML = `What will <span id="current-pokemon">${this.battleEngine.player.name}</span> do?`;
     }
 
+    // Setup animated sprite for battle
+    setupAnimatedSprite(elementId, fighterKey, position) {
+        const element = document.getElementById(elementId);
+        
+        // Create SVG sprite
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', position === 'player' ? '96' : '80');
+        svg.setAttribute('height', position === 'player' ? '96' : '80');
+        svg.setAttribute('viewBox', '0 0 32 32');
+        svg.classList.add('animated-sprite', `${fighterKey}-sprite`);
+        
+        // Create use element to reference sprite from SVG defs
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', `sprites/sprites.svg#${fighterKey}-sprite`);
+        
+        svg.appendChild(use);
+        
+        // Clear element and add animated sprite
+        element.innerHTML = '';
+        element.appendChild(svg);
+        
+        // Add position-specific classes
+        if (position === 'opponent') {
+            svg.classList.add('opponent-sprite');
+        } else {
+            svg.classList.add('player-sprite');
+        }
+        
+        return svg;
+    }
+
+    // Trigger sprite animation
+    triggerSpriteAnimation(position, animationType) {
+        const iconId = position === 'player' ? 'player-icon' : 'opponent-icon';
+        const sprite = document.querySelector(`#${iconId} .animated-sprite`);
+        
+        if (sprite) {
+            // Remove existing animation classes
+            sprite.classList.remove('sprite-attacking', 'sprite-damaged', 'sprite-victory', 'sprite-fainted');
+            
+            // Add new animation class
+            sprite.classList.add(`sprite-${animationType}`);
+            
+            // Remove animation class after completion
+            setTimeout(() => {
+                sprite.classList.remove(`sprite-${animationType}`);
+            }, animationType === 'victory' ? 2000 : 1000);
+        }
+    }
+
     // Hide move selection menu
     hideMoveMenu() {
         document.getElementById('move-menu').style.display = 'none';
@@ -324,6 +391,12 @@ class GameController {
         this.isProcessingTurn = true;
         this.hideMoveMenu();
 
+        // Trigger attack animation
+        this.triggerSpriteAnimation('player', 'attacking');
+        
+        // Brief delay for attack animation
+        await new Promise(resolve => setTimeout(resolve, 400));
+        
         // Execute player move
         const result = this.battleEngine.executeMove(
             this.battleEngine.player,
@@ -354,6 +427,12 @@ class GameController {
             this.battleEngine.player
         );
 
+        // Trigger opponent attack animation
+        this.triggerSpriteAnimation('opponent', 'attacking');
+        
+        // Brief delay for attack animation
+        await new Promise(resolve => setTimeout(resolve, 400));
+        
         const result = this.battleEngine.executeMove(
             this.battleEngine.opponent,
             this.battleEngine.player,
@@ -391,11 +470,33 @@ class GameController {
 
         // Damage animations
         if (result.damage > 0) {
+            const targetPosition = result.defender === this.battleEngine.player.name ? 'player' : 'opponent';
+            
+            // Trigger damage animation
+            this.triggerSpriteAnimation(targetPosition, 'damaged');
+            
+            // Add type effectiveness visual effects
+            if (result.effectiveness > 1) {
+                const sprite = document.querySelector(`#${targetPosition}-icon .animated-sprite`);
+                if (sprite) {
+                    sprite.classList.add('super-effective-flash');
+                    setTimeout(() => sprite.classList.remove('super-effective-flash'), 500);
+                }
+            } else if (result.effectiveness < 1) {
+                const sprite = document.querySelector(`#${targetPosition}-icon .animated-sprite`);
+                if (sprite) {
+                    sprite.classList.add('not-very-effective-dim');
+                    setTimeout(() => sprite.classList.remove('not-very-effective-dim'), 500);
+                }
+            }
+
             const targetSprite = result.defender === this.battleEngine.player.name
                 ? document.getElementById('player-sprite')
                 : document.getElementById('opponent-sprite');
 
-            BattleAnimations.damageFlash(targetSprite);
+            if (targetSprite) {
+                BattleAnimations.damageFlash(targetSprite);
+            }
             BattleAnimations.screenShake(document.getElementById('battle-screen'));
 
             // Update health bar
@@ -431,9 +532,23 @@ class GameController {
         const result = this.battleEngine.getBattleResult();
         
         if (result.result === 'victory') {
-            this.showVictoryScreen();
+            // Trigger victory animation for player, faint animation for opponent
+            this.triggerSpriteAnimation('player', 'victory');
+            this.triggerSpriteAnimation('opponent', 'fainted');
+            
+            // Wait for animations then show victory screen
+            setTimeout(() => {
+                this.showVictoryScreen();
+            }, 1500);
         } else {
-            this.showDefeatScreen();
+            // Trigger defeat animations
+            this.triggerSpriteAnimation('player', 'fainted');
+            this.triggerSpriteAnimation('opponent', 'victory');
+            
+            // Wait for animations then show defeat screen
+            setTimeout(() => {
+                this.showDefeatScreen();
+            }, 1500);
         }
     }
 

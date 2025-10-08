@@ -6,6 +6,153 @@
     box-sizing: border-box;
 }
 
+/* === LLM SPRITES === */
+.llm-sprite {
+    width: 64px;
+    height: 64px;
+    display: inline-block;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    border-radius: 8px;
+    position: relative;
+    animation: float 2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-4px); }
+}
+
+/* LLM-specific sprite styles using CSS pixel art */
+.sprite-claude {
+    background: linear-gradient(45deg, #4a90e2 0%, #357abd 50%, #2a5a8a 100%);
+    border: 2px solid #1a3d5c;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-claude::before {
+    content: '🤖';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-chatgpt {
+    background: linear-gradient(45deg, #10a37f 0%, #0d8a6b 50%, #0a6b56 100%);
+    border: 2px solid #085a47;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-chatgpt::before {
+    content: '💬';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-gemini {
+    background: linear-gradient(45deg, #4285f4 0%, #3367d6 50%, #2851a3 100%);
+    border: 2px solid #1e3a8a;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-gemini::before {
+    content: '💎';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-grok {
+    background: linear-gradient(45deg, #1da1f2 0%, #1991db 50%, #1480c4 100%);
+    border: 2px solid #0f6aa8;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-grok::before {
+    content: '😏';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-llama {
+    background: linear-gradient(45deg, #ff6b35 0%, #f7931e 50%, #e67e22 100%);
+    border: 2px solid #d35400;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-llama::before {
+    content: '🦙';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-kimi {
+    background: linear-gradient(45deg, #9b59b6 0%, #8e44ad 50%, #7d3c98 100%);
+    border: 2px solid #6c3483;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-kimi::before {
+    content: '🧠';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-mistral {
+    background: linear-gradient(45deg, #34495e 0%, #2c3e50 50%, #243342 100%);
+    border: 2px solid #1b2631;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-mistral::before {
+    content: '🌪️';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.sprite-qwen {
+    background: linear-gradient(45deg, #e74c3c 0%, #c0392b 50%, #a93226 100%);
+    border: 2px solid #922b21;
+    box-shadow: inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+
+.sprite-qwen::before {
+    content: '🏮';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
 body {
     font-family: 'Press Start 2P', monospace;
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8b 100%);
@@ -398,6 +545,69 @@ body {
     z-index: 2;
     position: relative;
 }
+
+/* Enhanced battle sprites - larger versions */
+.battle-sprite {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.battle-sprite.sprite-claude { 
+    background: linear-gradient(45deg, #4a90e2 0%, #357abd 50%, #2a5a8a 100%); 
+    border: 3px solid #1a3d5c; 
+}
+.battle-sprite.sprite-chatgpt { 
+    background: linear-gradient(45deg, #10a37f 0%, #0d8a6b 50%, #0a6b56 100%); 
+    border: 3px solid #085a47; 
+}
+.battle-sprite.sprite-gemini { 
+    background: linear-gradient(45deg, #4285f4 0%, #3367d6 50%, #2851a3 100%); 
+    border: 3px solid #1e3a8a; 
+}
+.battle-sprite.sprite-grok { 
+    background: linear-gradient(45deg, #1da1f2 0%, #1991db 50%, #1480c4 100%); 
+    border: 3px solid #0f6aa8; 
+}
+.battle-sprite.sprite-llama { 
+    background: linear-gradient(45deg, #ff6b35 0%, #f7931e 50%, #e67e22 100%); 
+    border: 3px solid #d35400; 
+}
+.battle-sprite.sprite-kimi { 
+    background: linear-gradient(45deg, #9b59b6 0%, #8e44ad 50%, #7d3c98 100%); 
+    border: 3px solid #6c3483; 
+}
+.battle-sprite.sprite-mistral { 
+    background: linear-gradient(45deg, #34495e 0%, #2c3e50 50%, #243342 100%); 
+    border: 3px solid #1b2631; 
+}
+.battle-sprite.sprite-qwen { 
+    background: linear-gradient(45deg, #e74c3c 0%, #c0392b 50%, #a93226 100%); 
+    border: 3px solid #922b21; 
+}
+
+.battle-sprite::before {
+    font-size: 48px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.6));
+}
+
+.battle-sprite.sprite-claude::before { content: '🤖'; }
+.battle-sprite.sprite-chatgpt::before { content: '💬'; }
+.battle-sprite.sprite-gemini::before { content: '💎'; }
+.battle-sprite.sprite-grok::before { content: '😏'; }
+.battle-sprite.sprite-llama::before { content: '🦙'; }
+.battle-sprite.sprite-kimi::before { content: '🧠'; }
+.battle-sprite.sprite-mistral::before { content: '🌪️'; }
+.battle-sprite.sprite-qwen::before { content: '🏮'; }
 
 .sprite-animation {
     position: absolute;
