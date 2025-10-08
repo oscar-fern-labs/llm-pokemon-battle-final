@@ -149,17 +149,7 @@ class GameController {
         // Create small sprite for selection
         const spriteContainer = document.createElement('div');
         spriteContainer.className = 'fighter-icon';
-        
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', '40');
-        svg.setAttribute('height', '40');
-        svg.setAttribute('viewBox', '0 0 32 32');
-        svg.classList.add('llm-sprite', `sprite-${key}`);
-        
-        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        use.setAttribute('href', `sprites/sprites.svg#${key}-sprite`);
-        svg.appendChild(use);
-        spriteContainer.appendChild(svg);
+        spriteContainer.innerHTML = this.createSpriteHtml(key, 'selection');
 
         card.innerHTML = `
             <div class="fighter-name">${fighter.name}</div>
@@ -333,31 +323,123 @@ class GameController {
     setupAnimatedSprite(elementId, fighterKey, position) {
         const element = document.getElementById(elementId);
         
-        // Create SVG sprite
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', position === 'player' ? '96' : '80');
-        svg.setAttribute('height', position === 'player' ? '96' : '80');
-        svg.setAttribute('viewBox', '0 0 32 32');
-        svg.classList.add('animated-sprite', `${fighterKey}-sprite`);
-        
-        // Create use element to reference sprite from SVG defs
-        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        use.setAttribute('href', `sprites/sprites.svg#${fighterKey}-sprite`);
-        
-        svg.appendChild(use);
-        
-        // Clear element and add animated sprite
+        // Clear element
         element.innerHTML = '';
-        element.appendChild(svg);
         
-        // Add position-specific classes
-        if (position === 'opponent') {
-            svg.classList.add('opponent-sprite');
-        } else {
-            svg.classList.add('player-sprite');
+        // Create sprite directly based on fighter key
+        const spriteHtml = this.createSpriteHtml(fighterKey, position);
+        element.innerHTML = spriteHtml;
+        
+        // Add position-specific classes to the sprite
+        const sprite = element.querySelector('.animated-sprite');
+        if (sprite) {
+            if (position === 'opponent') {
+                sprite.classList.add('opponent-sprite');
+            } else {
+                sprite.classList.add('player-sprite');
+            }
         }
         
-        return svg;
+        return sprite;
+    }
+    
+    // Create sprite HTML based on LLM logos
+    createSpriteHtml(fighterKey, position) {
+        const size = position === 'selection' ? '40' : (position === 'player' ? '96' : '80');
+        
+        const sprites = {
+            claude: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite claude-sprite">
+                <circle cx="16" cy="16" r="12" fill="#ff6b35" stroke="#cc4400" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#ff8c42" stroke="#ff6b35" stroke-width="1"/>
+                <path d="M12,10 A6,6 0 0,0 12,22" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="13" cy="13" r="1.5" fill="#ffffff"/>
+                <circle cx="19" cy="13" r="1.5" fill="#ffffff"/>
+                <circle cx="13" cy="13" r="0.5" fill="#333333"/>
+                <circle cx="19" cy="13" r="0.5" fill="#333333"/>
+                <path d="M14,19 Q16,21 18,19" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+            </svg>`,
+            
+            chatgpt: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite chatgpt-sprite">
+                <circle cx="16" cy="16" r="12" fill="#10a37f" stroke="#0a8870" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#19c47f" stroke="#10a37f" stroke-width="1"/>
+                <path d="M10,10 L22,10 L19,16 L13,16 Z" fill="#ffffff" opacity="0.8"/>
+                <path d="M10,22 L22,22 L19,16 L13,16 Z" fill="#ffffff" opacity="0.6"/>
+                <circle cx="13" cy="16" r="1.5" fill="#ffffff" class="chat-dot1"/>
+                <circle cx="16" cy="16" r="1.5" fill="#ffffff" class="chat-dot2"/>
+                <circle cx="19" cy="16" r="1.5" fill="#ffffff" class="chat-dot3"/>
+            </svg>`,
+            
+            gemini: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite gemini-sprite">
+                <polygon points="16,4 24,12 16,20 8,12" fill="#4285f4" stroke="#3367d6" stroke-width="2"/>
+                <polygon points="16,6 22,12 16,18 10,12" fill="#34a853" stroke="#137333" stroke-width="1"/>
+                <polygon points="16,8 20,12 16,16 12,12" fill="#fbbc05" stroke="#f9ab00" stroke-width="1"/>
+                <circle cx="16" cy="12" r="2" fill="#ea4335" stroke="#d33b01" stroke-width="1"/>
+                <circle cx="12" cy="8" r="1" fill="#4285f4" class="sparkle1"/>
+                <circle cx="20" cy="8" r="1" fill="#34a853" class="sparkle2"/>
+                <circle cx="12" cy="16" r="1" fill="#fbbc05" class="sparkle3"/>
+                <circle cx="20" cy="16" r="1" fill="#ea4335" class="sparkle4"/>
+            </svg>`,
+            
+            grok: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite grok-sprite">
+                <circle cx="16" cy="16" r="12" fill="#000000" stroke="#333333" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#1d9bf0" stroke="#000000" stroke-width="1"/>
+                <path d="M10,10 L22,22 M22,10 L10,22" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="13" cy="12" rx="3" ry="2" fill="#000000" stroke="#333333" stroke-width="1"/>
+                <ellipse cx="19" cy="12" rx="3" ry="2" fill="#000000" stroke="#333333" stroke-width="1"/>
+                <path d="M14,20 Q16,18 18,20" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+            </svg>`,
+            
+            llama: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite llama-sprite">
+                <circle cx="16" cy="16" r="12" fill="#1877f2" stroke="#166fe5" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#42a5f5" stroke="#1877f2" stroke-width="1"/>
+                <ellipse cx="16" cy="14" rx="6" ry="4" fill="#ffffff" stroke="#e3f2fd" stroke-width="1"/>
+                <ellipse cx="16" cy="10" rx="3" ry="4" fill="#ffffff" stroke="#e3f2fd" stroke-width="1"/>
+                <ellipse cx="16" cy="8" rx="2" ry="2" fill="#ffffff" stroke="#e3f2fd" stroke-width="1"/>
+                <circle cx="14" cy="8" r="0.8" fill="#1877f2"/>
+                <circle cx="18" cy="8" r="0.8" fill="#1877f2"/>
+                <ellipse cx="13" cy="6" rx="1" ry="2" fill="#ffffff" stroke="#e3f2fd" stroke-width="1"/>
+                <ellipse cx="19" cy="6" rx="1" ry="2" fill="#ffffff" stroke="#e3f2fd" stroke-width="1"/>
+                <path d="M12,20 L14,16 L16,20 L18,16 L20,20" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+            </svg>`,
+            
+            kimi: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite kimi-sprite">
+                <circle cx="16" cy="16" r="12" fill="#2d3748" stroke="#1a202c" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#4a5568" stroke="#2d3748" stroke-width="1"/>
+                <path d="M12,8 A8,8 0 0,0 12,24 A6,6 0 0,1 12,8" fill="#e2e8f0" stroke="#cbd5e0" stroke-width="1"/>
+                <polygon points="20,10 21,12 23,12 21.5,13.5 22,16 20,14.5 18,16 18.5,13.5 17,12 19,12" fill="#ffd700" class="neural-pulse1"/>
+                <circle cx="22" cy="20" r="1" fill="#ffffff" class="neural-pulse2"/>
+                <circle cx="10" cy="20" r="0.8" fill="#e2e8f0" class="neural-pulse3"/>
+                <circle cx="14" cy="14" r="1.5" fill="#ffd700"/>
+                <circle cx="18" cy="14" r="1.5" fill="#ffd700"/>
+            </svg>`,
+            
+            mistral: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite mistral-sprite">
+                <circle cx="16" cy="16" r="12" fill="#0f172a" stroke="#1e293b" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#334155" stroke="#0f172a" stroke-width="1"/>
+                <path d="M10,12 L12,8 L14,12 L16,8 L18,12 L20,8 L22,12" fill="none" stroke="#f8fafc" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8,16 Q12,14 16,16 Q20,18 24,16" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" class="wind-swirl"/>
+                <path d="M8,20 Q12,18 16,20 Q20,22 24,20" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" class="wind-swirl"/>
+                <circle cx="13" cy="14" r="1" fill="#f8fafc"/>
+                <circle cx="19" cy="14" r="1" fill="#f8fafc"/>
+            </svg>`,
+            
+            qwen: `<svg width="${size}" height="${size}" viewBox="0 0 32 32" class="animated-sprite qwen-sprite">
+                <circle cx="16" cy="16" r="12" fill="#ff6900" stroke="#e55a00" stroke-width="2"/>
+                <circle cx="16" cy="16" r="9" fill="#ff8533" stroke="#ff6900" stroke-width="1"/>
+                <rect x="12" y="8" width="8" height="2" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+                <rect x="12" y="12" width="8" height="2" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+                <rect x="12" y="16" width="8" height="2" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+                <rect x="14" y="6" width="2" height="16" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+                <circle cx="10" cy="10" r="1" fill="#ffd700" class="pattern-glow"/>
+                <circle cx="22" cy="10" r="1" fill="#ffd700" class="pattern-glow"/>
+                <circle cx="10" cy="22" r="1" fill="#ffd700" class="pattern-glow"/>
+                <circle cx="22" cy="22" r="1" fill="#ffd700" class="pattern-glow"/>
+                <circle cx="13" cy="13" r="1" fill="#ffffff"/>
+                <circle cx="19" cy="13" r="1" fill="#ffffff"/>
+            </svg>`
+        };
+        
+        return sprites[fighterKey] || sprites.claude;
     }
 
     // Trigger sprite animation
