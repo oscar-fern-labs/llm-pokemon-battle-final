@@ -246,6 +246,10 @@ class GameController {
         this.displayBattleMessage(`Wild ${opponent.name} appeared!`).then(() => {
             return this.displayBattleMessage(`Go! ${this.selectedFighter.name}!`);
         }).then(() => {
+            // Always start with player's turn for move selection
+            // The actual turn order is handled during move execution
+            this.battleEngine.currentTurn = 'player';
+            
             // Shorter delay for better UX - show move menu faster
             setTimeout(() => {
                 this.showMoveMenu();
