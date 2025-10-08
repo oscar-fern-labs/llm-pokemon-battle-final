@@ -246,10 +246,10 @@ class GameController {
         this.displayBattleMessage(`Wild ${opponent.name} appeared!`).then(() => {
             return this.displayBattleMessage(`Go! ${this.selectedFighter.name}!`);
         }).then(() => {
-            // Add a small delay then show move menu
+            // Shorter delay for better UX - show move menu faster
             setTimeout(() => {
                 this.showMoveMenu();
-            }, 1000);
+            }, 500);
         });
     }
 
@@ -295,7 +295,16 @@ class GameController {
         if (this.battleEngine.currentTurn !== 'player' || this.isProcessingTurn) return;
         
         console.log('Showing move menu for', this.battleEngine.player.name);
-        document.getElementById('move-menu').style.display = 'block';
+        const moveMenu = document.getElementById('move-menu');
+        moveMenu.style.display = 'block';
+        
+        // Add a subtle animation to draw attention
+        moveMenu.style.opacity = '0';
+        setTimeout(() => {
+            moveMenu.style.opacity = '1';
+            moveMenu.style.transition = 'opacity 0.3s ease-in';
+        }, 100);
+        
         document.getElementById('battle-message').innerHTML = `What will <span id="current-pokemon">${this.battleEngine.player.name}</span> do?`;
     }
 
